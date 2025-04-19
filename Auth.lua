@@ -177,54 +177,37 @@ local function showAdminPanel()
         toggle.Size = UDim2.new(1, -30, 0, 35)
         toggle.Position = UDim2.new(0, 15, 0, 60 + (order * 40))
         toggle.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-        toggle.TextColor3 = Color3.new(1, 1, 1)
-        toggle.Font = Enum.Font.Gotham
+        toggle.Text = name
+        toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
         toggle.TextSize = 14
-        toggle.Text = "☐ " .. name
-        toggle.AutoButtonColor = false
-        local toggled = false
-
-        local uiCorner = Instance.new("UICorner", toggle)
-        uiCorner.CornerRadius = UDim.new(0, 8)
-
+        toggle.Font = Enum.Font.Gotham
+        toggle.TextXAlignment = Enum.TextXAlignment.Left
         toggle.MouseButton1Click:Connect(function()
-            toggled = not toggled
-            toggle.Text = (toggled and "☑ " or "☐ ") .. name
-            callback(toggled)
+            callback(toggle)
         end)
+        
+        local uiCorner = Instance.new("UICorner", toggle)
+        uiCorner.CornerRadius = UDim.new(0, 10)
     end
 
-    -- Aimlock Toggle
-    createToggle("Aimlock (Hold)", 0, function(state)
-        aimlockEnabled = state
+    -- Create toggles for aimlock, esp, etc.
+    createToggle("Enable Aimlock", 1, function(toggle)
+        aimlockEnabled = not aimlockEnabled
+        toggle.Text = "Enable Aimlock: " .. tostring(aimlockEnabled)
     end)
 
-    -- ESP Toggle
-    createToggle("ESP", 1, function(state)
-        espEnabled = state
+    createToggle("Enable ESP", 2, function(toggle)
+        espEnabled = not espEnabled
+        toggle.Text = "Enable ESP: " .. tostring(espEnabled)
     end)
 
-    -- Speed Boost Toggle
-    createToggle("Speed Boost", 2, function(state)
-        speed = state
-        local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = state and 50 or 16
-        end
+    createToggle("Enable Speed", 3, function(toggle)
+        speed = not speed
+        toggle.Text = "Enable Speed: " .. tostring(speed)
     end)
+
+    -- You can extend the admin panel with more toggles and features as needed.
 end
 
--- Call to unlock Admin Panel
+-- Start the process
 unlockAdminPanel()
-
--- Credits
-local credits = Instance.new("TextLabel", frame)
-credits.Text = "Made by @godbleeds | Selfies"
-credits.Position = UDim2.new(0.5, -100, 1, -25)
-credits.Size = UDim2.new(0, 200, 0, 20)
-credits.BackgroundTransparency = 1
-credits.TextColor3 = Color3.fromRGB(150, 150, 150)
-credits.Font = Enum.Font.Gotham
-credits.TextSize = 12
-credits.TextScaled = false
-credits.TextXAlignment = Enum.TextXAlignment.Center
